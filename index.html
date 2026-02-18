@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>University Quick Links</title>
+<link rel="icon" type="image/png" href="Icon.png">
+<link rel="apple-touch-icon" href="1.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather&family=EB+Garamond&family=Inter&display=swap" rel="stylesheet">
+<link rel="manifest" id="manifest">
+
+<style>
+:root{
+    --text-main: #fff;
+    --accent:#00f5ff;
+    --radius:28px;
+    --card-bg:rgba(255,255,255,0.12);
+    --font:'Inter',sans-serif;
+    --bg:linear-gradient(120deg,#0f2027,#203a43,#2c5364);
+}
+
+/* DARK MODE VARIABLES */
+[data-theme="dark"] {
+    --bg: linear-gradient(120deg, #121212, #1e1e1e, #2d2d2d);
+    --card-bg: rgba(255, 255, 255, 0.08);
+}
+
+/* TEXT SIZE VARIABLES */
+[data-text-size="small"] {
+    font-size: 14px;
+}
+[data-text-size="medium"] {
+    font-size: 16px;
+}
+[data-text-size="large"] {
+    font-size: 18px;
+}
+
+/* BASIC RESET */
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+    font-family:var(--font);
+    min-height:100vh;
+    background:var(--bg);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:20px;
+    transition:background 0.5s, font-size 0.3s;
+}
+
+/* HEADER BOX */
+header{
+    width:100%;
+    max-width:900px;
+    display:flex;
+    align-items:center;
+    border-radius:28px 28px 0 0;
+    overflow:hidden;
+    margin-bottom:25px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px);
+}
+
+/* HEADER LEFT LOGO */
+.header-logo{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,0,0,0.2);
+    padding:15px;
+}
+.header-logo img{
+    max-width:100%;
+    max-height:70px;
+}
+
+/* HEADER RIGHT TEXT */
+.header-text{
+    flex:2;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:'Merriweather', serif;
+    font-size:28px;
+    font-weight:700;
+    text-align:center;
+    padding:15px;
+    background:rgba(0,0,0,0.1);
+    color:#fff;
+    position:relative;
+}
+
+/* NEON RAINBOW ANIMATION */
+@keyframes rainbowText {
+    0%{color:red;}
+    14%{color:orange;}
+    28%{color:yellow;}
+    42%{color:lime;}
+    57%{color:cyan;}
+    71%{color:blue;}
+    85%{color:violet;}
+    100%{color:red;}
+}
+.header-text span{
+    animation: rainbowText 4s linear infinite;
+}
+
+/* SEARCH BAR */
+.search-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 25px;
+    position: relative;
+}
+
+.search-box {
+    width: 100%;
+    padding: 15px 20px 15px 50px;
+    border-radius: 25px;
+    border: 2px solid var(--accent);
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    font-size: 16px;
+    font-family: var(--font);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s;
+}
+
+.search-box:focus {
+    outline: none;
+    box-shadow: 0 0 15px rgba(0, 245, 255, 0.5);
+    transform: scale(1.02);
+}
+
+.search-box::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.search-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent);
+    font-size: 18px;
+}
+
+/* HIDE CLASS FOR SEARCH */
+.hidden {
+    display: none !important;
+}
+
+/* OFFLINE BANNER */
+#offline{
+    position:fixed;
+    bottom:50px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#ff3b3b;
+    color:#fff;
+    padding:8px 14px;
+    border-radius:20px;
+    font-size:13px;
+    display:none;
+    z-index:9999;
+}
+
+/* SETTINGS BUTTON */
+.settings-btn{
+    position:fixed;
+    top:12px;
+    left:12px;
+    width:36px;
+    height:36px;
+    border:none;
+    background:transparent;
+    cursor:pointer;
+    z-index:10000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:22px;
+    transition: transform 0.25s;
+    user-select:none;
+}
+.settings-btn:hover{
+    transform: scale(1.2) rotate(10deg);
+}
+
+/* SETTINGS PANEL */
+.settings{
+    position:fixed;
+    top:55px;
+    left:12px;
+    width:220px;
+    background:rgba(0,0,0,0.9);
+    color:#fff;
+    padding:20px;
+    border-radius:16px;
+    display:none;
+    z-index:9999;
+    border: 1px solid var(--accent);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.settings h3 {
+    margin-bottom: 15px;
+    color: var(--accent);
+    text-align: center;
+    font-size: 18px;
+}
+.settings label{
+    font-size:13px;
+    margin-top:8px;
+    display:block;
+}
+.settings select,
+.settings input[type=color]{
+    width:100%;
+    margin-top:6px;
+    padding:8px;
+    border-radius:10px;
+    border:none;
+    font-size:14px;
+    cursor:pointer;
+}
+
+/* NEW SETTINGS CONTROLS */
+.setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 12px 0;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.setting-label {
+    font-size: 14px;
+}
+
+.setting-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.size-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 1px solid var(--accent);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.size-btn:hover {
+    background: var(--accent);
+    transform: scale(1.1);
+}
+
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 26px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+    background-color: var(--accent);
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(24px);
+}
+
+/* NOTIFICATION TOAST */
+.notification-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    border-left: 4px solid var(--accent);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    display: none;
+    z-index: 10001;
+    max-width: 300px;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification-icon {
+    color: var(--accent);
+    font-size: 20px;
+}
+
+.notification-message {
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.close-notification {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+/* GRID */
+.container{
+    max-width:900px;
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:25px;
+    perspective:1500px;
+    margin-bottom:100px;
+}
+
+/* CARD */
+.card{
+    position:relative;
+    background:var(--card-bg);
+    border-radius:var(--radius);
+    padding:24px;
+    overflow:hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    transition: transform 0.3s, box-shadow 0.3s;
+    will-change: transform;
+}
+.card:hover{
+    transform: translateY(-3px) rotateX(1.5deg);
+    box-shadow:0 12px 25px rgba(0,0,0,0.45);
+}
+.card:active{
+    transform:scale(0.96);
+}
+
+/* NEON BORDER ANIMATION */
+@keyframes neonFlow {
+    0% { border-color:red; }
+    14% { border-color:orange; }
+    28% { border-color:yellow; }
+    42% { border-color:lime; }
+    57% { border-color:cyan; }
+    71% { border-color:blue; }
+    85% { border-color:violet; }
+    100% { border-color:red; }
+}
+.card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    border:3px solid var(--accent);
+    animation: neonFlow 4s linear infinite;
+    pointer-events:none;
+}
+
+.card h2{
+    color:#fff;
+    text-align:center;
+    margin-bottom:16px;
+}
+.card.single{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+}
+
+/* RED DOT */
+.dot{
+    width:8px;
+    height:8px;
+    background:red;
+    border-radius:50%;
+    display:inline-block;
+    margin-left:6px;
+}
+
+/* SUB LINKS */
+.sub-links{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+.sub-links a{
+    text-decoration:none;
+    padding:12px;
+    border-radius:16px;
+    background:rgba(255,255,255,0.25);
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    gap:6px;
+    font-weight:500;
+    cursor:pointer;
+    transition: transform 0.2s;
+}
+.sub-links a:hover{
+    transform:scale(1.05);
+}
+
+/* FOOTER IMPROVED */
+footer{
+    width:100%;
+    max-width:900px;
+    text-align:center;
+    padding:20px 0;
+    background:linear-gradient(90deg,#1c1c1c,#111);
+    color:#fff;
+    font-family:'Merriweather', serif;
+    font-size:15px;
+    letter-spacing:0.5px;
+    border-top:2px solid rgba(255,255,255,0.2);
+    border-radius:0 0 28px 28px;
+    box-shadow:0 -6px 20px rgba(0,0,0,0.5);
+}
+footer span{
+    color:var(--accent);
+    font-weight:600;
+    text-shadow:0 0 8px var(--accent);
+    animation: neonFlow 4s linear infinite;
+}
+</style>
+</head>
+
+<body>
+  
+<div id="offline">You are offline</div>
+
+<!-- NOTIFICATION TOAST -->
+<div class="notification-toast" id="notificationToast">
+    <div class="notification-content">
+        <div class="notification-icon">🔔</div>
+        <div class="notification-message" id="notificationMessage"></div>
+    </div>
+    <button class="close-notification" onclick="hideNotification()">×</button>
+</div>
+
+
+
+<!-- HEADER -->
+<header>
+    <div class="header-logo">
+        <img src="1.png" alt="Logo">
+    </div>
+    <div class="header-text">
+        <span>Focusflow</span>
+    </div>
+</header>
+
+<!-- GRID CARDS -->
+<div class="container" id="cardsContainer">
+
+    <br></> <br></> <br></> <br></> <br></> <br></>
+    
+<!-- New Card: Focusflow -->
+<div class="card" id="focusflow-card">
+    <h2>Focusflow</h2>
+    <div class="sub-links">
+        <a onclick="openLink('Focusflow.html')">🚀 Open</a>
+    </div>
+</div>
+
+<script>
+    // Function to open a page
+    function openLink(url) {
+        window.location.href = url;
+    }
+
+    // Auto-open Focusflow.html after 10 seconds
+    let autoOpenTimeout = setTimeout(() => {
+        openLink('Focusflow.html');
+    }, 10000);
+
+    // If user clicks manually, cancel auto-open
+    document.getElementById('focusflow-card').addEventListener('click', () => {
+        clearTimeout(autoOpenTimeout);
+    });
+</script>
+
+
+<script>
+/* SETTINGS TOGGLE */
+const panel=document.getElementById('settings');
+function toggleSettings(){panel.style.display=panel.style.display==='block'?'none':'block'}
+document.addEventListener('click',e=>{
+    if(!panel.contains(e.target)&&!e.target.classList.contains('settings-btn')) panel.style.display='none';
+});
+
+/* FONT AND BACKGROUND COLOR */
+function setFont(f){
+    document.body.style.fontFamily=f;
+    localStorage.font=f;
+    showNotification(`Font changed to ${f}`);
+}
+function setBg(c){
+    document.body.style.background=`linear-gradient(120deg,${c},#000)`;
+    localStorage.bg=c;
+    showNotification('Background color updated');
+}
+/* PDF DOWNLOAD FUNCTION */
+function downloadPDF() {
+    // Create a temporary anchor element
+    const link = document.createElement('a');
+    link.href = 'syllabus.pdf';
+    link.download = 'syllabus.pdf';
+    
+    // Show notification
+    if (localStorage.notificationsEnabled !== 'false') {
+        showNotification('Starting download...');
+    }
+    
+    // Trigger download
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+/* NEW FUNCTIONS */
+
+// NIGHT MODE TOGGLE
+function toggleNightMode(isDark) {
+    if (isDark) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.nightMode = 'dark';
+        showNotification('Night mode activated');
+    } else {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.nightMode = 'light';
+        showNotification('Light mode activated');
+    }
+}
+
+// TEXT SIZE ADJUSTER
+function setTextSize(size) {
+    document.documentElement.setAttribute('data-text-size', size);
+    localStorage.textSize = size;
+    showNotification(`Text size set to ${size}`);
+    
+    // Update active button
+    document.querySelectorAll('.size-btn').forEach(btn => {
+        btn.style.background = '';
+    });
+    event.target.style.background = 'var(--accent)';
+}
+
+// NOTIFICATIONS SYSTEM
+function toggleNotifications(isEnabled) {
+    localStorage.notificationsEnabled = isEnabled;
+    if (isEnabled) {
+        showNotification('Notifications enabled');
+        checkForNewContent();
+    } else {
+        showNotification('Notifications disabled');
+    }
+}
+
+function showNotification(message) {
+    // Check if notifications are enabled
+    if (localStorage.notificationsEnabled === 'false') return;
+    
+    const toast = document.getElementById('notificationToast');
+    const messageEl = document.getElementById('notificationMessage');
+    
+    messageEl.textContent = message;
+    toast.style.display = 'flex';
+    
+    // Auto hide after 4 seconds
+    setTimeout(() => {
+        hideNotification();
+    }, 4000);
+}
+
+function hideNotification() {
+    document.getElementById('notificationToast').style.display = 'none';
+}
+
+// SEARCH FUNCTIONALITY
+document.getElementById('searchBox').addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.card');
+    
+    if (searchTerm === '') {
+        cards.forEach(card => {
+            card.classList.remove('hidden');
+        });
+        return;
+    }
+    
+    cards.forEach(card => {
+        const cardText = card.textContent.toLowerCase();
+        if (cardText.includes(searchTerm)) {
+            card.classList.remove('hidden');
+        } else {
+            card.classList.add('hidden');
+        }
+    });
+    
+    // Show notification if no results found
+    const visibleCards = document.querySelectorAll('.card:not(.hidden)');
+    if (visibleCards.length === 0 && searchTerm !== '') {
+        showNotification(`No results found for "${searchTerm}"`);
+    }
+});
+
+// Check for new content periodically (simulated)
+function checkForNewContent() {
+    // Simulate checking for new content
+    const now = new Date();
+    const lastCheck = localStorage.lastCheck ? new Date(localStorage.lastCheck) : new Date(0);
+    const hoursDiff = (now - lastCheck) / (1000 * 60 * 60);
+    
+    if (hoursDiff > 24) {
+        // Show notification for new content (simulated)
+        const messages = [
+            "Check new UG notifications",
+            "Updated syllabus available",
+            "New notices on college board",
+            "Result portal updated"
+        ];
+        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+        
+        // Only show if notifications are enabled
+        if (localStorage.notificationsEnabled !== 'false') {
+            setTimeout(() => {
+                showNotification(randomMessage);
+            }, 3000);
+        }
+        
+        localStorage.lastCheck = now.toISOString();
+    }
+}
+
+// Load saved settings on page load
+function loadSavedSettings() {
+    // Font
+    if(localStorage.font) {
+        setFont(localStorage.font);
+        document.querySelector('select').value = localStorage.font;
+    }
+    
+    // Background
+    if(localStorage.bg) {
+        setBg(localStorage.bg);
+        document.getElementById('bgColor').value = localStorage.bg;
+    }
+    
+    // Night Mode
+    if(localStorage.nightMode === 'dark') {
+        document.getElementById('nightModeToggle').checked = true;
+        toggleNightMode(true);
+    }
+    
+    // Text Size
+    if(localStorage.textSize) {
+        setTextSize(localStorage.textSize);
+        // Highlight active size button
+        document.querySelectorAll('.size-btn').forEach((btn, index) => {
+            const sizes = ['small', 'medium', 'large'];
+            if (sizes[index] === localStorage.textSize) {
+                btn.style.background = 'var(--accent)';
+            }
+        });
+    }
+    
+    // Notifications
+    if(localStorage.notificationsEnabled !== undefined) {
+        document.getElementById('notificationsToggle').checked = 
+            localStorage.notificationsEnabled === 'true';
+    }
+    
+    // Check for new content on load
+    setTimeout(() => {
+        checkForNewContent();
+    }, 2000);
+}
+
+/* LINK HANDLING */
+function openLink(u){
+    // Show notification before opening
+    if (localStorage.notificationsEnabled !== 'false') {
+        showNotification('Opening link...');
+    }
+    setTimeout(() => {
+        location.href = u;
+    }, 300);
+}
+
+/* LONG PRESS COPY */
+document.querySelectorAll('[data-url]').forEach(a=>{
+    let t;
+    a.addEventListener('touchstart', e => { t = setTimeout(()=>{
+        navigator.clipboard.writeText(a.dataset.url);
+        showNotification('Link copied to clipboard');
+    },2000); });
+    a.addEventListener('touchend', e => clearTimeout(t));
+    a.addEventListener('click', e => { e.preventDefault(); location.href=a.dataset.url; });
+});
+
+/* OFFLINE DETECTION */
+window.addEventListener('offline',()=>{
+    offline.style.display='block';
+    showNotification('You are now offline');
+});
+window.addEventListener('online',()=>{
+    offline.style.display='none';
+    showNotification('Back online!');
+});
+
+/* RED DOT LOGIC */
+const today=new Date().toDateString();
+if(localStorage.last!==today){
+    document.getElementById('notifyDot').style.display='inline-block';
+    localStorage.last=today;
+}
+
+/* PWA MANIFEST */
+const manifest={
+    name:"Focusflow",
+    short_name:"Focusflow",
+    start_url:".",
+    display:"standalone",
+    background_color:"#000",
+    theme_color:"#000",
+    icons:[
+        {src:"Icon.png",sizes:"192x192",type:"image/png", purpose: "any maskable"},
+        {src:"Icon.png",sizes:"512x512",type:"image/png"}
+    ]
+};
+document.getElementById('manifest').href=URL.createObjectURL(new Blob([JSON.stringify(manifest)],{type:'application/json'}));
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', loadSavedSettings);
+
+</script>
+</body>
+</html>
