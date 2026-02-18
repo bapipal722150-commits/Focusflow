@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Focusflow</title>
+<link rel="icon" type="image/png" href="Icon.png">
+<link rel="apple-touch-icon" href="1.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" id="manifest">
+
+<style>
+  /* Minimal styling for optional fallback message */
+  body {
+    background: #0f2027;
+    color: white;
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    text-align: center;
+  }
+  .message {
+    background: rgba(0,0,0,0.5);
+    padding: 20px;
+    border-radius: 12px;
+  }
+  .hidden {
+    display: none;
+  }
+  #offline {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff3b3b;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    z-index: 9999;
+  }
+</style>
+</head>
+<body>
+
+<!-- Offline banner (hidden by default) -->
+<div id="offline" class="hidden">You are offline</div>
+
+<!-- Simple fallback message (visible only if redirect fails) -->
+<div class="message" id="fallback">
+  <p>Redirecting to Focusflow…</p>
+  <p><small>If nothing happens, <a href="Focusflow.html" style="color:#00f5ff;">click here</a>.</small></p>
+</div>
+
+<script>
+// --- IMMEDIATE REDIRECT TO Focusflow.html ---
+window.location.replace('Focusflow.html');
+
+// --- OFFLINE DETECTION (kept for PWA completeness) ---
+const offlineDiv = document.getElementById('offline');
+window.addEventListener('offline', () => {
+  offlineDiv.classList.remove('hidden');
+});
+window.addEventListener('online', () => {
+  offlineDiv.classList.add('hidden');
+});
+
+// --- PWA MANIFEST (Focusflow branded) ---
+const manifest = {
+  name: "Focusflow",
+  short_name: "Focusflow",
+  start_url: "Focusflow.html",
+  display: "standalone",
+  background_color: "#000",
+  theme_color: "#000",
+  icons: [
+    { src: "Icon.png", sizes: "192x192", type: "image/png", purpose: "any maskable" },
+    { src: "Icon.png", sizes: "512x512", type: "image/png" }
+  ]
+};
+document.getElementById('manifest').href = URL.createObjectURL(
+  new Blob([JSON.stringify(manifest)], { type: 'application/json' })
+);
+
+// Optional: hide fallback message after a short time (if redirect works)
+setTimeout(() => {
+  document.getElementById('fallback').style.opacity = '0.5';
+}, 2000);
+</script>
+
+</body>
+</html>
